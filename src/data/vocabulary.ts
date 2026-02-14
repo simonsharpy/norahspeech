@@ -23,30 +23,30 @@ export const defaultVocabulary: VocabularyItem[] = [
   // People (4 words)
   { id: 'mom', label: { en: 'mom', fr: 'maman' }, categoryId: 'people', arasaacId: 2458 },
   { id: 'dad', label: { en: 'dad', fr: 'papa' }, categoryId: 'people', arasaacId: 2497 },
-  { id: 'me', label: { en: 'me', fr: 'moi' }, categoryId: 'people', arasaacId: 37376 },
-  { id: 'you', label: { en: 'you', fr: 'toi' }, categoryId: 'people', arasaacId: 37379 },
+  { id: 'me', label: { en: 'me', fr: 'moi' }, categoryId: 'people', arasaacId: 6632 },
+  { id: 'you', label: { en: 'you', fr: 'toi' }, categoryId: 'people', arasaacId: 6625 },
 
   // Actions (7 words)
-  { id: 'want', label: { en: 'want', fr: 'vouloir' }, categoryId: 'actions', arasaacId: 5585 },
+  { id: 'want', label: { en: 'want', fr: 'vouloir' }, categoryId: 'actions', arasaacId: 5441 },
   { id: 'go', label: { en: 'go', fr: 'aller' }, categoryId: 'actions', arasaacId: 8142 },
-  { id: 'stop', label: { en: 'stop', fr: 'arrêter' }, categoryId: 'actions', arasaacId: 4766 },
+  { id: 'stop', label: { en: 'stop', fr: 'arrêter' }, categoryId: 'actions', arasaacId: 7196 },
   { id: 'more', label: { en: 'more', fr: 'encore' }, categoryId: 'actions', arasaacId: 26913 },
   { id: 'eat', label: { en: 'eat', fr: 'manger' }, categoryId: 'actions', arasaacId: 6456 },
-  { id: 'drink', label: { en: 'drink', fr: 'boire' }, categoryId: 'actions', arasaacId: 6457 },
+  { id: 'drink', label: { en: 'drink', fr: 'boire' }, categoryId: 'actions', arasaacId: 6061 },
   { id: 'play', label: { en: 'play', fr: 'jouer' }, categoryId: 'actions', arasaacId: 23392 },
 
   // Feelings (5 words)
-  { id: 'happy', label: { en: 'happy', fr: 'content' }, categoryId: 'feelings', arasaacId: 4618 },
-  { id: 'sad', label: { en: 'sad', fr: 'triste' }, categoryId: 'feelings', arasaacId: 4620 },
-  { id: 'angry', label: { en: 'angry', fr: 'en colère' }, categoryId: 'feelings', arasaacId: 4619 },
-  { id: 'tired', label: { en: 'tired', fr: 'fatigué' }, categoryId: 'feelings', arasaacId: 2809 },
-  { id: 'scared', label: { en: 'scared', fr: 'peur' }, categoryId: 'feelings', arasaacId: 4623 },
+  { id: 'happy', label: { en: 'happy', fr: 'content' }, categoryId: 'feelings', arasaacId: 35533 },
+  { id: 'sad', label: { en: 'sad', fr: 'triste' }, categoryId: 'feelings', arasaacId: 35545 },
+  { id: 'angry', label: { en: 'angry', fr: 'en colère' }, categoryId: 'feelings', arasaacId: 35539 },
+  { id: 'tired', label: { en: 'tired', fr: 'fatigué' }, categoryId: 'feelings', arasaacId: 35537 },
+  { id: 'scared', label: { en: 'scared', fr: 'peur' }, categoryId: 'feelings', arasaacId: 35535 },
 
   // Descriptors (4 words)
-  { id: 'big', label: { en: 'big', fr: 'grand' }, categoryId: 'descriptors', arasaacId: 2456 },
-  { id: 'little', label: { en: 'little', fr: 'petit' }, categoryId: 'descriptors', arasaacId: 2455 },
-  { id: 'hot', label: { en: 'hot', fr: 'chaud' }, categoryId: 'descriptors', arasaacId: 2425 },
-  { id: 'cold', label: { en: 'cold', fr: 'froid' }, categoryId: 'descriptors', arasaacId: 2424 },
+  { id: 'big', label: { en: 'big', fr: 'grand' }, categoryId: 'descriptors', arasaacId: 4658 },
+  { id: 'little', label: { en: 'little', fr: 'petit' }, categoryId: 'descriptors', arasaacId: 4716 },
+  { id: 'hot', label: { en: 'hot', fr: 'chaud' }, categoryId: 'descriptors', arasaacId: 2300 },
+  { id: 'cold', label: { en: 'cold', fr: 'froid' }, categoryId: 'descriptors', arasaacId: 35557 },
 
   // Questions (2 words)
   { id: 'what', label: { en: 'what', fr: 'quoi' }, categoryId: 'questions', arasaacId: 22620 },
@@ -54,7 +54,7 @@ export const defaultVocabulary: VocabularyItem[] = [
 ]
 
 /** Bump this when default vocabulary changes to invalidate stale IndexedDB data */
-export const BOARD_VERSION = 5
+export const BOARD_VERSION = 6
 
 export const defaultBoard: BoardState = {
   version: BOARD_VERSION,
