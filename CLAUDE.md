@@ -62,6 +62,10 @@ GEMINI_API_KEY=key npm run generate:symbols -- --only=happy  # Generate a single
   1. Generate with Gemini: `GEMINI_API_KEY=key npm run generate:symbols`
   2. Remove backgrounds: `source .venv/bin/activate && for f in public/symbols/ai/*.webp; do rembg i "$f" "${f%.webp}.tmp.png" && cwebp -q 80 "${f%.webp}.tmp.png" -o "$f" && rm "${f%.webp}.tmp.png"; done`
   3. Install rembg if needed: `pip install 'rembg[cpu,cli]'` (in the project `.venv`)
+- **Images must be resized to 256x256** after generation — Gemini outputs 1024x1024 but symbols display at 64-80px (256px is plenty for retina). Resize with ImageMagick:
+  ```bash
+  for f in public/symbols/ai/*.webp; do magick "$f" -resize 256x256 "$f"; done
+  ```
 - **ARASAAC pictograms** serve as fallback (in `public/symbols/{arasaacId}.png`) — the `<img>` `onError` handler automatically falls back if an AI image is missing
 - ARASAAC IDs are looked up via the API (`https://api.arasaac.org/v1/pictograms/en/search/{word}`) — don't guess IDs
 - Each vocabulary entry stores both a word `id` (for AI images) and an `arasaacId` (for fallback)
