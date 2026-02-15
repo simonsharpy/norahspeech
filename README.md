@@ -2,6 +2,8 @@
 
 A free, open-source AAC (Augmentative and Alternative Communication) web app for pre-literate children. Built as a Progressive Web App — installable on any device, works offline, no app store required.
 
+![Norah Speech screenshot](screenshot.PNG)
+
 ## Why
 
 Commercial AAC apps cost $200-400 and lock families into a single platform. Norah Speech is free, runs in any browser, and keeps all data on-device. Originally built for Norah (5, autistic, partially verbal), but designed for any family in a similar situation.
