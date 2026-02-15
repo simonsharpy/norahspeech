@@ -14,11 +14,11 @@ export const defaultVocabulary: VocabularyItem[] = [
   // Social (7 words)
   { id: 'yes', label: { en: 'yes', fr: 'oui' }, categoryId: 'social', arasaacId: 5584 },
   { id: 'no', label: { en: 'no', fr: 'non' }, categoryId: 'social', arasaacId: 5526 },
-  { id: 'hi', label: { en: 'hi', fr: 'salut' }, categoryId: 'social', arasaacId: 6522 },
-  { id: 'bye', label: { en: 'bye', fr: 'au revoir' }, categoryId: 'social', arasaacId: 6028 },
-  { id: 'please', label: { en: 'please', fr: 's\'il te plaît' }, categoryId: 'social', arasaacId: 8195 },
-  { id: 'thank_you', label: { en: 'thank you', fr: 'merci' }, categoryId: 'social', arasaacId: 8129 },
-  { id: 'help', label: { en: 'help', fr: 'aide' }, categoryId: 'social', arasaacId: 32648 },
+  { id: 'hi', label: { en: 'hi', fr: 'salut' }, categoryId: 'social', arasaacId: 34567 },
+  { id: 'bye', label: { en: 'bye', fr: 'au revoir' }, categoryId: 'social', arasaacId: 5896 },
+  { id: 'please', label: { en: 'please', fr: 's\'il te plaît' }, categoryId: 'social', arasaacId: 8194 },
+  { id: 'thank_you', label: { en: 'thank you', fr: 'merci' }, categoryId: 'social', arasaacId: 8128 },
+  { id: 'help', label: { en: 'help', fr: 'aide' }, categoryId: 'social', arasaacId: 4570 },
 
   // People (4 words)
   { id: 'mom', label: { en: 'mom', fr: 'maman' }, categoryId: 'people', arasaacId: 2458 },
@@ -28,25 +28,25 @@ export const defaultVocabulary: VocabularyItem[] = [
 
   // Actions (7 words)
   { id: 'want', label: { en: 'want', fr: 'vouloir' }, categoryId: 'actions', arasaacId: 5441 },
-  { id: 'go', label: { en: 'go', fr: 'aller' }, categoryId: 'actions', arasaacId: 8142 },
-  { id: 'stop', label: { en: 'stop', fr: 'arrêter' }, categoryId: 'actions', arasaacId: 7196 },
+  { id: 'go', label: { en: 'go', fr: 'aller' }, categoryId: 'actions', arasaacId: 2432 },
+  { id: 'stop', label: { en: 'stop', fr: 'arrêter' }, categoryId: 'actions', arasaacId: 7195 },
   { id: 'more', label: { en: 'more', fr: 'encore' }, categoryId: 'actions', arasaacId: 26913 },
-  { id: 'eat', label: { en: 'eat', fr: 'manger' }, categoryId: 'actions', arasaacId: 6456 },
-  { id: 'drink', label: { en: 'drink', fr: 'boire' }, categoryId: 'actions', arasaacId: 6061 },
-  { id: 'play', label: { en: 'play', fr: 'jouer' }, categoryId: 'actions', arasaacId: 23392 },
+  { id: 'eat', label: { en: 'eat', fr: 'manger' }, categoryId: 'actions', arasaacId: 2349 },
+  { id: 'drink', label: { en: 'drink', fr: 'boire' }, categoryId: 'actions', arasaacId: 2276 },
+  { id: 'play', label: { en: 'play', fr: 'jouer' }, categoryId: 'actions', arasaacId: 2439 },
 
   // Feelings (5 words)
-  { id: 'happy', label: { en: 'happy', fr: 'content' }, categoryId: 'feelings', arasaacId: 35533 },
-  { id: 'sad', label: { en: 'sad', fr: 'triste' }, categoryId: 'feelings', arasaacId: 35545 },
-  { id: 'angry', label: { en: 'angry', fr: 'en colère' }, categoryId: 'feelings', arasaacId: 35539 },
-  { id: 'tired', label: { en: 'tired', fr: 'fatigué' }, categoryId: 'feelings', arasaacId: 35537 },
-  { id: 'scared', label: { en: 'scared', fr: 'peur' }, categoryId: 'feelings', arasaacId: 35535 },
+  { id: 'happy', label: { en: 'happy', fr: 'content' }, categoryId: 'feelings', arasaacId: 3250 },
+  { id: 'sad', label: { en: 'sad', fr: 'triste' }, categoryId: 'feelings', arasaacId: 2606 },
+  { id: 'angry', label: { en: 'angry', fr: 'en colère' }, categoryId: 'feelings', arasaacId: 2374 },
+  { id: 'tired', label: { en: 'tired', fr: 'fatigué' }, categoryId: 'feelings', arasaacId: 2314 },
+  { id: 'scared', label: { en: 'scared', fr: 'peur' }, categoryId: 'feelings', arasaacId: 2261 },
 
   // Descriptors (4 words)
   { id: 'big', label: { en: 'big', fr: 'grand' }, categoryId: 'descriptors', arasaacId: 4658 },
   { id: 'little', label: { en: 'little', fr: 'petit' }, categoryId: 'descriptors', arasaacId: 4716 },
   { id: 'hot', label: { en: 'hot', fr: 'chaud' }, categoryId: 'descriptors', arasaacId: 2300 },
-  { id: 'cold', label: { en: 'cold', fr: 'froid' }, categoryId: 'descriptors', arasaacId: 35557 },
+  { id: 'cold', label: { en: 'cold', fr: 'froid' }, categoryId: 'descriptors', arasaacId: 2401 },
 
   // Questions (2 words)
   { id: 'what', label: { en: 'what', fr: 'quoi' }, categoryId: 'questions', arasaacId: 22620 },
@@ -54,7 +54,7 @@ export const defaultVocabulary: VocabularyItem[] = [
 ]
 
 /** Bump this when default vocabulary changes to invalidate stale IndexedDB data */
-export const BOARD_VERSION = 6
+export const BOARD_VERSION = 7
 
 export const defaultBoard: BoardState = {
   version: BOARD_VERSION,
