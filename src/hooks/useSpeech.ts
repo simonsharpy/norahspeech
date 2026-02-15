@@ -103,9 +103,9 @@ export function useSpeech() {
           return
         }
 
-        // Natural pause between words (150ms)
+        // Natural pause between words in connected speech
         if (i < items.length - 1 && !abortRef.current) {
-          await new Promise((resolve) => setTimeout(resolve, 150))
+          await new Promise((resolve) => setTimeout(resolve, 120))
         }
       }
     } else {
