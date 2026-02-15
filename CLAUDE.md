@@ -11,7 +11,8 @@
 - **Tailwind CSS v4** — styling
 - **vite-plugin-pwa (Workbox)** — offline support / service worker
 - **Web Speech API** — text-to-speech fallback (primary TTS uses pre-generated audio files)
-- **ARASAAC** — open-source AAC pictogram library (https://arasaac.org)
+- **Gemini Imagen** — AI-generated symbol images (via `@google/genai`), with ARASAAC as fallback
+- **ARASAAC** — open-source AAC pictogram library (https://arasaac.org), used as fallback
 - **IndexedDB via idb** — local on-device storage for custom boards/photos
 - **Playwright** — end-to-end tests
 
@@ -27,6 +28,9 @@ npm run typecheck    # TypeScript type checking (tsc --noEmit)
 npm run test:e2e     # Run Playwright end-to-end tests
 npx playwright test tests/board.spec.ts          # Run a single test file
 npx playwright test --grep "speaks word"         # Run tests matching a pattern
+GEMINI_API_KEY=key npm run generate:symbols      # Generate AI symbol images (one-time)
+GEMINI_API_KEY=key npm run generate:symbols -- --force  # Regenerate all images
+GEMINI_API_KEY=key npm run generate:symbols -- --only=happy  # Generate a single image
 ```
 
 ## Code Style & Conventions
@@ -52,9 +56,12 @@ npx playwright test --grep "speaks word"         # Run tests matching a pattern
 
 ### Symbols
 
-- ARASAAC pictograms are fetched from their API (`https://api.arasaac.org/v1/pictograms/{id}?download=true`) and cached locally
-- Each vocabulary entry stores an ARASAAC pictogram ID
+- **AI-generated images** (Gemini Imagen) are the primary symbol source, stored in `public/symbols/ai/{wordId}.webp`
+- Generated once via `npm run generate:symbols` and committed as static assets
+- **ARASAAC pictograms** serve as fallback (in `public/symbols/{arasaacId}.png`) — the `<img>` `onError` handler automatically falls back if an AI image is missing
+- Each vocabulary entry stores both a word `id` (for AI images) and an `arasaacId` (for fallback)
 - Custom symbols are stored as blobs in IndexedDB
+- The generation script lives in `scripts/generateSymbols.mjs` and uses a consistent children's book illustration style prompt
 
 ### Offline strategy
 

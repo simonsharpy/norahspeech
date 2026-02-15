@@ -1,5 +1,6 @@
+import { useState } from 'react'
 import type { VocabularyItem, Language } from '../data/types'
-import { getArasaacUrl } from '../lib/arasaac'
+import { getSymbolUrl, getArasaacUrl } from '../lib/arasaac'
 
 interface SentenceStripProps {
   sentence: VocabularyItem[]
@@ -7,6 +8,30 @@ interface SentenceStripProps {
   onPlay: () => void
   onClear: () => void
   onRemoveLast: () => void
+}
+
+function SentenceSymbol({ item, language }: { item: VocabularyItem; language: Language }) {
+  const [useFallback, setUseFallback] = useState(false)
+  const imgSrc = useFallback
+    ? getArasaacUrl(item.arasaacId)
+    : getSymbolUrl(item.id, item.arasaacId)
+
+  return (
+    <div className="shrink-0 flex flex-col items-center justify-center rounded-xl bg-white border border-gray-200 p-1 h-full min-w-[4rem] shadow-sm">
+      <img
+        src={imgSrc}
+        alt={item.label[language]}
+        className="h-12 w-12 object-contain"
+        draggable={false}
+        onError={() => {
+          if (!useFallback) setUseFallback(true)
+        }}
+      />
+      <span className="text-sm font-bold text-gray-900 leading-tight text-center truncate w-full px-1">
+        {item.label[language]}
+      </span>
+    </div>
+  )
 }
 
 export function SentenceStrip({ sentence, language, onPlay, onClear, onRemoveLast }: SentenceStripProps) {
@@ -30,20 +55,7 @@ export function SentenceStrip({ sentence, language, onPlay, onClear, onRemoveLas
     >
       <div className="flex flex-1 items-center gap-2 overflow-x-auto scrollbar-none h-full">
         {sentence.map((item, index) => (
-          <div
-            key={`${item.id}-${index}`}
-            className="shrink-0 flex flex-col items-center justify-center rounded-xl bg-white border border-gray-200 p-1 h-full min-w-[4rem] shadow-sm"
-          >
-            <img
-              src={getArasaacUrl(item.arasaacId)}
-              alt={item.label[language]}
-              className="h-12 w-12 object-contain"
-              draggable={false}
-            />
-            <span className="text-sm font-bold text-gray-900 leading-tight text-center truncate w-full px-1">
-              {item.label[language]}
-            </span>
-          </div>
+          <SentenceSymbol key={`${item.id}-${index}`} item={item} language={language} />
         ))}
       </div>
       <div className="flex shrink-0 gap-1 pl-1 border-l border-gray-100 h-full items-center">

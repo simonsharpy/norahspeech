@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { VocabularyItem, Language } from '../data/types'
-import { getArasaacUrl } from '../lib/arasaac'
+import { getSymbolUrl, getArasaacUrl } from '../lib/arasaac'
 
 interface SymbolButtonProps {
   item: VocabularyItem
@@ -11,6 +11,7 @@ interface SymbolButtonProps {
 
 export function SymbolButton({ item, language, categoryColor, onTap }: SymbolButtonProps) {
   const [isPressed, setIsPressed] = useState(false)
+  const [useFallback, setUseFallback] = useState(false)
   const label = item.label[language]
 
   function handleClick() {
@@ -18,6 +19,10 @@ export function SymbolButton({ item, language, categoryColor, onTap }: SymbolBut
     onTap(item)
     setTimeout(() => setIsPressed(false), 200)
   }
+
+  const imgSrc = useFallback
+    ? getArasaacUrl(item.arasaacId)
+    : getSymbolUrl(item.id, item.arasaacId)
 
   return (
     <button
@@ -40,11 +45,14 @@ export function SymbolButton({ item, language, categoryColor, onTap }: SymbolBut
     >
       <div className="flex-1 flex items-center justify-center w-full">
         <img
-          src={getArasaacUrl(item.arasaacId)}
+          src={imgSrc}
           alt={label}
           className="h-16 w-16 object-contain sm:h-20 sm:w-20"
           loading="lazy"
           draggable={false}
+          onError={() => {
+            if (!useFallback) setUseFallback(true)
+          }}
         />
       </div>
       <span 
