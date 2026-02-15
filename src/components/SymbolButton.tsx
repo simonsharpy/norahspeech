@@ -47,7 +47,7 @@ export function SymbolButton({ item, language, categoryColor, onTap }: SymbolBut
         <img
           src={imgSrc}
           alt={label}
-          className="h-16 w-16 object-contain sm:h-20 sm:w-20"
+          className="h-20 w-20 object-contain sm:h-24 sm:w-24"
           loading="lazy"
           draggable={false}
           onError={() => {
