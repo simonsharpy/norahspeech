@@ -2,7 +2,7 @@
 
 A free, open-source AAC (Augmentative and Alternative Communication) web app for pre-literate children. Built as a Progressive Web App — installable on any device, works offline, no app store required.
 
-![Norah Speech screenshot](screenshot.PNG)
+<img src="screenshot.PNG" alt="Norah Speech screenshot" width="400">
 
 ## Why
 
