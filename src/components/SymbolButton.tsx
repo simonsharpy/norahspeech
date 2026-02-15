@@ -24,26 +24,33 @@ export function SymbolButton({ item, language, categoryColor, onTap }: SymbolBut
       data-testid={`symbol-${item.id}`}
       onClick={handleClick}
       className={`
-        flex flex-col items-center justify-center gap-1
-        rounded-2xl p-2 shadow-md
+        flex flex-col items-center justify-between
+        rounded-xl p-2 shadow-sm
         transition-all duration-150 ease-out
         active:scale-95 select-none cursor-pointer
-        min-h-[100px] w-full
-        ${isPressed ? 'scale-95 ring-4 ring-white/60' : ''}
+        min-h-[110px] w-full bg-white
+        border-b-4 border-r-2 border-t border-l
+        hover:brightness-95
+        ${isPressed ? 'scale-95 brightness-90' : ''}
       `}
       style={{
-        backgroundColor: categoryColor,
+        borderColor: categoryColor,
       }}
       aria-label={label}
     >
-      <img
-        src={getArasaacUrl(item.arasaacId)}
-        alt={label}
-        className="h-16 w-16 rounded-lg bg-white/90 p-1 object-contain sm:h-20 sm:w-20"
-        loading="lazy"
-        draggable={false}
-      />
-      <span className="text-sm font-semibold text-white drop-shadow-sm leading-tight text-center sm:text-base">
+      <div className="flex-1 flex items-center justify-center w-full">
+        <img
+          src={getArasaacUrl(item.arasaacId)}
+          alt={label}
+          className="h-16 w-16 object-contain sm:h-20 sm:w-20"
+          loading="lazy"
+          draggable={false}
+        />
+      </div>
+      <span 
+        className="text-sm font-bold text-gray-900 leading-tight text-center sm:text-base w-full truncate px-1"
+        style={{ color: 'black' }} // Force high contrast
+      >
         {label}
       </span>
     </button>

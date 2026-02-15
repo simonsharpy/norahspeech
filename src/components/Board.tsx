@@ -41,10 +41,10 @@ export function Board() {
   }, [])
 
   return (
-    <div className="flex h-[100dvh] flex-col bg-slate-50">
+    <div className="flex h-[100dvh] flex-col bg-gray-50">
       <Header />
 
-      <div className="py-2">
+      <div className="pt-3 pb-1">
         <SentenceStrip
           sentence={sentence}
           language={language}
@@ -61,10 +61,10 @@ export function Board() {
         onSelect={setActiveCategory}
       />
 
-      <main className="flex-1 overflow-y-auto px-3 pb-4 pt-2">
+      <main className="flex-1 overflow-y-auto px-4 pb-6 pt-3">
         <div
           data-testid="symbol-grid"
-          className="grid grid-cols-3 gap-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
+          className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
         >
           {filteredItems.map((item) => {
             const color = activeCategory === 'all'

@@ -1,4 +1,5 @@
 import type { VocabularyItem, Language } from '../data/types'
+import { getArasaacUrl } from '../lib/arasaac'
 
 interface SentenceStripProps {
   sentence: VocabularyItem[]
@@ -13,9 +14,9 @@ export function SentenceStrip({ sentence, language, onPlay, onClear, onRemoveLas
     return (
       <div
         data-testid="sentence-strip"
-        className="flex items-center justify-center h-14 mx-3 rounded-xl bg-gray-50 border-2 border-dashed border-gray-200"
+        className="flex items-center justify-center h-24 mx-3 rounded-2xl bg-white border-2 border-dashed border-gray-300 shadow-sm"
       >
-        <span className="text-gray-400 text-sm">
+        <span className="text-gray-400 text-base font-medium">
           {language === 'fr' ? 'Appuie sur les images pour faire une phrase' : 'Tap symbols to build a sentence'}
         </span>
       </div>
@@ -25,52 +26,62 @@ export function SentenceStrip({ sentence, language, onPlay, onClear, onRemoveLas
   return (
     <div
       data-testid="sentence-strip"
-      className="flex items-center gap-2 mx-3 rounded-xl bg-indigo-50 border-2 border-indigo-200 px-3 py-2 min-h-14"
+      className="flex items-center gap-2 mx-3 rounded-2xl bg-white border-2 border-indigo-100 px-2 py-2 h-28 shadow-sm"
     >
-      <div className="flex flex-1 items-center gap-1.5 overflow-x-auto scrollbar-none">
+      <div className="flex flex-1 items-center gap-2 overflow-x-auto scrollbar-none h-full">
         {sentence.map((item, index) => (
-          <span
+          <div
             key={`${item.id}-${index}`}
-            className="shrink-0 rounded-lg bg-white px-2.5 py-1 text-sm font-semibold text-gray-800 shadow-sm border border-indigo-100"
+            className="shrink-0 flex flex-col items-center justify-center rounded-xl bg-white border border-gray-200 p-1 h-full min-w-[4rem] shadow-sm"
           >
-            {item.label[language]}
-          </span>
+            <img
+              src={getArasaacUrl(item.arasaacId)}
+              alt={item.label[language]}
+              className="h-12 w-12 object-contain"
+              draggable={false}
+            />
+            <span className="text-sm font-bold text-gray-900 leading-tight text-center truncate w-full px-1">
+              {item.label[language]}
+            </span>
+          </div>
         ))}
       </div>
-      <div className="flex shrink-0 gap-1.5">
+      <div className="flex shrink-0 gap-1 pl-1 border-l border-gray-100 h-full items-center">
         <button
           data-testid="play-sentence"
           onClick={onPlay}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-500 text-white shadow-md hover:bg-indigo-600 active:scale-95 transition-all cursor-pointer"
+          className="flex h-full w-16 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md hover:bg-indigo-700 active:scale-95 transition-all cursor-pointer"
           aria-label={language === 'fr' ? 'Lire la phrase' : 'Play sentence'}
         >
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
+          <svg className="h-8 w-8 ml-1" viewBox="0 0 24 24" fill="currentColor">
             <path d="M8 5v14l11-7z" />
           </svg>
         </button>
-        <button
-          data-testid="backspace-sentence"
-          onClick={onRemoveLast}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-orange-400 text-white shadow-md hover:bg-orange-500 active:scale-95 transition-all cursor-pointer"
-          aria-label={language === 'fr' ? 'Effacer le dernier' : 'Remove last'}
-        >
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
-            <line x1="18" y1="9" x2="12" y2="15" />
-            <line x1="12" y1="9" x2="18" y2="15" />
-          </svg>
-        </button>
-        <button
-          data-testid="clear-sentence"
-          onClick={onClear}
-          className="flex h-10 w-10 items-center justify-center rounded-full bg-red-400 text-white shadow-md hover:bg-red-500 active:scale-95 transition-all cursor-pointer"
-          aria-label={language === 'fr' ? 'Tout effacer' : 'Clear all'}
-        >
-          <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18" />
-            <line x1="6" y1="6" x2="18" y2="18" />
-          </svg>
-        </button>
+        <div className="flex flex-col gap-1 h-full">
+          <button
+            data-testid="backspace-sentence"
+            onClick={onRemoveLast}
+            className="flex flex-1 w-12 items-center justify-center rounded-lg bg-orange-100 text-orange-600 hover:bg-orange-200 active:scale-95 transition-all cursor-pointer"
+            aria-label={language === 'fr' ? 'Effacer le dernier' : 'Remove last'}
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z" />
+              <line x1="18" y1="9" x2="12" y2="15" />
+              <line x1="12" y1="9" x2="18" y2="15" />
+            </svg>
+          </button>
+          <button
+            data-testid="clear-sentence"
+            onClick={onClear}
+            className="flex flex-1 w-12 items-center justify-center rounded-lg bg-red-100 text-red-600 hover:bg-red-200 active:scale-95 transition-all cursor-pointer"
+            aria-label={language === 'fr' ? 'Tout effacer' : 'Clear all'}
+          >
+            <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18" />
+              <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+          </button>
+        </div>
       </div>
     </div>
   )
