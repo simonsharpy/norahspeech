@@ -1,7 +1,13 @@
-import { useState, useEffect } from 'react'
-import type { BoardState } from '../data/types'
+import { useState, useEffect, useCallback, useMemo } from 'react'
+import type { BoardState, VocabularyItem } from '../data/types'
 import { defaultBoard, BOARD_VERSION } from '../data/vocabulary'
 import { loadBoard, saveBoard } from '../lib/storage'
+
+/** Returns true if the item should be visible given the current visibility overrides */
+function isItemVisible(item: VocabularyItem, visibility: Record<string, boolean>): boolean {
+  if (item.id in visibility) return visibility[item.id]
+  return !item.hiddenByDefault
+}
 
 /**
  * Hook that manages board state.
@@ -33,5 +39,27 @@ export function useBoard() {
     }
   }, [board, isLoaded])
 
-  return { board, setBoard, isLoaded }
+  /** Toggle visibility for a single item */
+  const toggleItemVisibility = useCallback((itemId: string) => {
+    setBoard((prev) => {
+      const item = prev.items.find((i) => i.id === itemId)
+      if (!item) return prev
+      const currentlyVisible = isItemVisible(item, prev.itemVisibility ?? {})
+      return {
+        ...prev,
+        itemVisibility: {
+          ...prev.itemVisibility,
+          [itemId]: !currentlyVisible,
+        },
+      }
+    })
+  }, [])
+
+  /** The subset of items that are currently visible */
+  const visibleItems = useMemo(
+    () => board.items.filter((item) => isItemVisible(item, board.itemVisibility ?? {})),
+    [board.items, board.itemVisibility],
+  )
+
+  return { board, setBoard, isLoaded, toggleItemVisibility, visibleItems, isItemVisible: (item: VocabularyItem) => isItemVisible(item, board.itemVisibility ?? {}) }
 }

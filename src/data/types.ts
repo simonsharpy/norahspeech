@@ -13,6 +13,11 @@ export type CategoryId =
   | 'feelings'
   | 'descriptors'
   | 'questions'
+  | 'food'
+  | 'places'
+  | 'objects'
+  | 'body'
+  | 'time'
 
 export interface Category {
   id: CategoryId
@@ -25,10 +30,14 @@ export interface VocabularyItem {
   label: BilingualLabel
   categoryId: CategoryId
   arasaacId: number
+  /** If true, item is hidden unless the user explicitly enables it */
+  hiddenByDefault?: boolean
 }
 
 export interface BoardState {
   version: number
   categories: Category[]
   items: VocabularyItem[]
+  /** User overrides: true = shown, false = hidden. Missing = use item's hiddenByDefault. */
+  itemVisibility?: Record<string, boolean>
 }

@@ -44,6 +44,7 @@ export default defineConfig({
         skipWaiting: true,
         cleanupOutdatedCaches: true,
         navigateFallback: '/index.html',
+        navigateFallbackDenylist: [/^\/terms\.html$/],
         runtimeCaching: [
           {
             urlPattern: /^https:\/\/api\.arasaac\.org\/v1\/pictograms\/.*$/,

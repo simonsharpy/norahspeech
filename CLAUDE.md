@@ -58,7 +58,12 @@ GEMINI_API_KEY=key npm run generate:symbols -- --only=happy  # Generate a single
 
 - **AI-generated images** (Gemini Imagen) are the primary symbol source, stored in `public/symbols/ai/{wordId}.webp`
 - Generated once via `npm run generate:symbols` and committed as static assets
+- **Background removal is required** after generating AI images — use `rembg` (Python) to strip backgrounds, then convert back to WebP with `cwebp`. The full pipeline for new images is:
+  1. Generate with Gemini: `GEMINI_API_KEY=key npm run generate:symbols`
+  2. Remove backgrounds: `source .venv/bin/activate && for f in public/symbols/ai/*.webp; do rembg i "$f" "${f%.webp}.tmp.png" && cwebp -q 80 "${f%.webp}.tmp.png" -o "$f" && rm "${f%.webp}.tmp.png"; done`
+  3. Install rembg if needed: `pip install 'rembg[cpu,cli]'` (in the project `.venv`)
 - **ARASAAC pictograms** serve as fallback (in `public/symbols/{arasaacId}.png`) — the `<img>` `onError` handler automatically falls back if an AI image is missing
+- ARASAAC IDs are looked up via the API (`https://api.arasaac.org/v1/pictograms/en/search/{word}`) — don't guess IDs
 - Each vocabulary entry stores both a word `id` (for AI images) and an `arasaacId` (for fallback)
 - Custom symbols are stored as blobs in IndexedDB
 - The generation script lives in `scripts/generateSymbols.mjs` and uses a consistent children's book illustration style prompt

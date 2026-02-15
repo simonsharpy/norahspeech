@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import type { VocabularyItem, CategoryId } from '../data/types'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useBoard } from '../hooks/useBoard'
@@ -8,24 +8,37 @@ import { CategoryTabs } from './CategoryTabs'
 import { SymbolButton } from './SymbolButton'
 import { SentenceStrip } from './SentenceStrip'
 import { Header } from './Header'
+import { TileConfigurator } from './TileConfigurator'
 
 export function Board() {
   const { language } = useLanguage()
-  const { board } = useBoard()
+  const { board, visibleItems, toggleItemVisibility, isItemVisible } = useBoard()
   const { speak, speakSentence } = useSpeech()
 
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all')
   const [sentence, setSentence] = useState<VocabularyItem[]>([])
+  const [configuratorOpen, setConfiguratorOpen] = useState(false)
 
   // Preload pre-generated audio files for all vocabulary items
   useEffect(() => {
     preloadAllAudio(board.items, ['en', 'fr'])
   }, [board.items])
 
-  const filteredItems = activeCategory === 'all'
-    ? board.items
-    : board.items.filter((item) => item.categoryId === activeCategory)
-  const activeCategoryData = board.categories.find((c) => c.id === activeCategory)
+  // Only show categories that have at least one visible item (plus "all")
+  const visibleCategories = useMemo(() => {
+    const visibleCategoryIds = new Set(visibleItems.map((item) => item.categoryId))
+    return board.categories.filter((c) => c.id === 'all' || visibleCategoryIds.has(c.id))
+  }, [board.categories, visibleItems])
+
+  // If the active category no longer has visible items, fall back to "all"
+  const effectiveCategory = (activeCategory !== 'all' && !visibleCategories.some((c) => c.id === activeCategory))
+    ? 'all'
+    : activeCategory
+
+  const filteredItems = effectiveCategory === 'all'
+    ? visibleItems
+    : visibleItems.filter((item) => item.categoryId === effectiveCategory)
+  const activeCategoryData = board.categories.find((c) => c.id === effectiveCategory)
   const categoryColor = activeCategoryData?.color ?? '#6366f1'
 
   const handleSymbolTap = useCallback((item: VocabularyItem) => {
@@ -47,7 +60,7 @@ export function Board() {
 
   return (
     <div className="flex h-[100dvh] flex-col bg-gray-50">
-      <Header />
+      <Header onOpenConfigurator={() => setConfiguratorOpen(true)} />
 
       <div className="pt-3 pb-1">
         <SentenceStrip
@@ -60,8 +73,8 @@ export function Board() {
       </div>
 
       <CategoryTabs
-        categories={board.categories}
-        activeCategory={activeCategory}
+        categories={visibleCategories}
+        activeCategory={effectiveCategory}
         language={language}
         onSelect={setActiveCategory}
       />
@@ -72,7 +85,7 @@ export function Board() {
           className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
         >
           {filteredItems.map((item) => {
-            const color = activeCategory === 'all'
+            const color = effectiveCategory === 'all'
               ? (board.categories.find((c) => c.id === item.categoryId)?.color ?? categoryColor)
               : categoryColor
             return (
@@ -87,6 +100,16 @@ export function Board() {
           })}
         </div>
       </main>
+
+      {configuratorOpen && (
+        <TileConfigurator
+          board={board}
+          language={language}
+          isItemVisible={isItemVisible}
+          onToggle={toggleItemVisibility}
+          onClose={() => setConfiguratorOpen(false)}
+        />
+      )}
     </div>
   )
 }
