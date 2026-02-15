@@ -1,8 +1,9 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 import type { VocabularyItem, CategoryId } from '../data/types'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useBoard } from '../hooks/useBoard'
 import { useSpeech } from '../hooks/useSpeech'
+import { preloadAllAudio } from '../lib/audioCache'
 import { CategoryTabs } from './CategoryTabs'
 import { SymbolButton } from './SymbolButton'
 import { SentenceStrip } from './SentenceStrip'
@@ -16,6 +17,11 @@ export function Board() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all')
   const [sentence, setSentence] = useState<VocabularyItem[]>([])
 
+  // Preload pre-generated audio files for all vocabulary items
+  useEffect(() => {
+    preloadAllAudio(board.items, ['en', 'fr'])
+  }, [board.items])
+
   const filteredItems = activeCategory === 'all'
     ? board.items
     : board.items.filter((item) => item.categoryId === activeCategory)
@@ -23,13 +29,12 @@ export function Board() {
   const categoryColor = activeCategoryData?.color ?? '#6366f1'
 
   const handleSymbolTap = useCallback((item: VocabularyItem) => {
-    speak(item.label[language], language)
+    speak(item, language)
     setSentence((prev) => [...prev, item])
   }, [speak, language])
 
   const handlePlaySentence = useCallback(() => {
-    const words = sentence.map((item) => item.label[language])
-    speakSentence(words, language)
+    speakSentence(sentence, language)
   }, [sentence, speakSentence, language])
 
   const handleClearSentence = useCallback(() => {
