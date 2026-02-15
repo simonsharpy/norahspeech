@@ -39,7 +39,8 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,woff2,mp3}'],
+        globPatterns: ['**/*.{js,css,html,ico,svg,woff2,webp,mp3}'],
+        globIgnores: ['**/symbols/*.png'],
         clientsClaim: true,
         skipWaiting: true,
         cleanupOutdatedCaches: true,
@@ -51,6 +52,20 @@ export default defineConfig({
             handler: 'CacheFirst',
             options: {
               cacheName: 'arasaac-pictograms',
+              expiration: {
+                maxEntries: 200,
+                maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
+              },
+              cacheableResponse: {
+                statuses: [0, 200],
+              },
+            },
+          },
+          {
+            urlPattern: /\/symbols\/\d+\.png$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'arasaac-fallback-symbols',
               expiration: {
                 maxEntries: 200,
                 maxAgeSeconds: 60 * 60 * 24 * 365, // 1 year
