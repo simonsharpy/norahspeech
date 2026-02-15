@@ -4,7 +4,7 @@ export function Header() {
   const { language, toggleLanguage } = useLanguage()
 
   return (
-    <header className="flex items-center justify-between px-4 py-3 bg-white border-b border-gray-200 sticky top-0 z-10">
+    <header className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-200 sticky top-0 z-10">
       <button
         data-testid="language-toggle"
         onClick={toggleLanguage}
@@ -15,9 +15,17 @@ export function Header() {
         <span>{language === 'fr' ? 'FR' : 'EN'}</span>
       </button>
 
-      <h1 className="text-xl font-extrabold text-indigo-600 tracking-tight">
-        Norah Speech
-      </h1>
+      <div className="flex items-center gap-2.5">
+        <img
+          src="/logo-header.png"
+          alt=""
+          className="h-9 w-9"
+        />
+        <h1 className="text-xl font-extrabold tracking-tight">
+          <span className="text-indigo-500">Norah</span>
+          <span className="text-pink-400 ml-1.5">Speech</span>
+        </h1>
+      </div>
 
       <div className="w-20" />
     </header>

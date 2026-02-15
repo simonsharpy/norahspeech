@@ -9,7 +9,7 @@ export default defineConfig({
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'apple-touch-icon.png'],
+      includeAssets: ['favicon.svg', 'favicon.png', 'apple-touch-icon.png', 'logo-header.png'],
       manifest: {
         name: 'Norah Speech',
         short_name: 'Norah',
