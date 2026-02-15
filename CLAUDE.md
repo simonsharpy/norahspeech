@@ -10,7 +10,7 @@
 - **Vite** — build tool
 - **Tailwind CSS v4** — styling
 - **vite-plugin-pwa (Workbox)** — offline support / service worker
-- **Web Speech API** — text-to-speech (no external TTS service)
+- **Web Speech API** — text-to-speech fallback (primary TTS uses pre-generated audio files)
 - **ARASAAC** — open-source AAC pictogram library (https://arasaac.org)
 - **IndexedDB via idb** — local on-device storage for custom boards/photos
 - **Playwright** — end-to-end tests
@@ -46,7 +46,8 @@ npx playwright test --grep "speaks word"         # Run tests matching a pattern
 
 - **Vocabulary data** lives in `src/data/vocabulary.ts` as a typed constant (default board)
 - **Board state** is managed via a React hook (`useBoard`) that loads from IndexedDB on mount and falls back to the default vocabulary
-- **Speech** is handled by `useSpeech` hook wrapping the Web Speech API
+- **Speech** is handled by `useSpeech` hook — uses pre-generated audio files with Web Speech API as fallback
+- **Audio cache** (`src/lib/audioCache.ts`) preloads mp3 files as blob URLs on startup for instant playback (works around iOS WebKit preload restrictions)
 - **Language** (fr/en) is a React context so all components can access it
 
 ### Symbols
@@ -60,6 +61,16 @@ npx playwright test --grep "speaks word"         # Run tests matching a pattern
 - Service worker (via vite-plugin-pwa) precaches the app shell
 - ARASAAC images are cached at runtime on first load via a Workbox runtime caching strategy
 - All user data is in IndexedDB (never on a server)
+
+### Audio / TTS
+
+- Pre-generated mp3 files live in `public/audio/{en,fr}/{itemId}.mp3`
+- `useSpeech` plays pre-generated audio when available, falls back to Web Speech API (`speechSynthesis`)
+- Sentence playback plays individual word clips sequentially with a 120ms inter-word pause
+- **Audio files must be tightly trimmed** (no leading/trailing silence) — otherwise sentence playback sounds sluggish. Use ffmpeg's `silenceremove` filter when generating new clips:
+  ```bash
+  ffmpeg -i input.mp3 -af "silenceremove=start_periods=1:start_threshold=-30dB,areverse,silenceremove=start_periods=1:start_threshold=-30dB,areverse" -b:a 48k output.mp3
+  ```
 
 ### Bilingual support
 
@@ -122,7 +133,9 @@ npx playwright test tests/board.spec.ts
 |------|---------|
 | `PLAN.md` | Product plan, features, vocabulary, UI sketch |
 | `src/data/vocabulary.ts` | Default word list — edit this to change starter words |
-| `src/hooks/useSpeech.ts` | TTS wrapper — all speech logic lives here |
+| `src/hooks/useSpeech.ts` | TTS wrapper — single word and sentence playback logic |
+| `src/lib/audioCache.ts` | Preloads mp3 audio as blob URLs for instant playback |
+| `public/audio/` | Pre-generated mp3 files (`{en,fr}/{itemId}.mp3`) — must be silence-trimmed |
 | `src/hooks/useBoard.ts` | Board state — loading, saving, editing symbols |
 | `vite.config.ts` | Vite + PWA config |
 | `tests/` | Playwright e2e tests |
