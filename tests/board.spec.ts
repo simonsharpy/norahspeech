@@ -27,6 +27,11 @@ test.beforeEach(async ({ page }) => {
     ;(window as unknown as Record<string, string[]>).__spokenWords = spoken
   })
 
+  // Block pre-generated audio files so the app always falls back to
+  // speechSynthesis (which we stub above). Without this, the audio cache
+  // loads the mp3s and speechSynthesis is never called.
+  await page.route('**/audio/**', (route) => route.abort())
+
   await page.goto('/')
 })
 
