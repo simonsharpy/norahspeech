@@ -115,5 +115,14 @@ export function useSpeech() {
     }
   }, [stopCurrent])
 
-  return { speak, speakSentence }
+  /**
+   * Speak arbitrary text using the Web Speech API.
+   * Useful for phrases like "I feel happy" that don't have pre-generated audio.
+   */
+  const speakText = useCallback((text: string, language: Language) => {
+    stopCurrent()
+    fallbackSpeak(text, language)
+  }, [stopCurrent])
+
+  return { speak, speakSentence, speakText }
 }

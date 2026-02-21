@@ -9,6 +9,7 @@ import { SymbolButton } from './SymbolButton'
 import { SentenceStrip } from './SentenceStrip'
 import { Header } from './Header'
 import { TileConfigurator } from './TileConfigurator'
+import { EmotionBoard } from './EmotionBoard'
 
 export function Board() {
   const { language } = useLanguage()
@@ -18,6 +19,7 @@ export function Board() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all')
   const [sentence, setSentence] = useState<VocabularyItem[]>([])
   const [configuratorOpen, setConfiguratorOpen] = useState(false)
+  const [emotionBoardOpen, setEmotionBoardOpen] = useState(false)
 
   // Preload pre-generated audio files for all vocabulary items
   useEffect(() => {
@@ -60,7 +62,10 @@ export function Board() {
 
   return (
     <div className="flex h-[100dvh] flex-col bg-gray-50">
-      <Header onOpenConfigurator={() => setConfiguratorOpen(true)} />
+      <Header
+        onOpenConfigurator={() => setConfiguratorOpen(true)}
+        onOpenEmotionBoard={() => setEmotionBoardOpen(true)}
+      />
 
       <div className="pt-3 pb-1">
         <SentenceStrip
@@ -109,6 +114,10 @@ export function Board() {
           onToggle={toggleItemVisibility}
           onClose={() => setConfiguratorOpen(false)}
         />
+      )}
+
+      {emotionBoardOpen && (
+        <EmotionBoard onClose={() => setEmotionBoardOpen(false)} />
       )}
     </div>
   )
