@@ -1,5 +1,5 @@
 import { useCallback, useRef } from 'react'
-import type { Language, VocabularyItem } from '../data/types'
+import type { Language, QuickPhrase, VocabularyItem } from '../data/types'
 import { getCachedAudio, hasAudio } from '../lib/audioCache'
 
 const LANG_MAP: Record<Language, string> = {
@@ -115,5 +115,14 @@ export function useSpeech() {
     }
   }, [stopCurrent])
 
-  return { speak, speakSentence }
+  /**
+   * Speak a quick phrase as a single utterance via the Web Speech API.
+   * Quick phrases don't have pre-generated audio, so they always use TTS.
+   */
+  const speakPhrase = useCallback((phrase: QuickPhrase, language: Language) => {
+    stopCurrent()
+    fallbackSpeak(phrase.label[language], language)
+  }, [stopCurrent])
+
+  return { speak, speakSentence, speakPhrase }
 }

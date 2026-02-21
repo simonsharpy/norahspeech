@@ -2,6 +2,7 @@ import type { BoardState, Category, VocabularyItem } from './types'
 
 export const defaultCategories: Category[] = [
   { id: 'all', label: { en: 'All', fr: 'Tout' }, color: '#64748b' },
+  { id: 'phrases', label: { en: 'Phrases', fr: 'Phrases' }, color: '#7c3aed' },
   { id: 'social', label: { en: 'Social', fr: 'Social' }, color: '#ec4899' },
   { id: 'people', label: { en: 'People', fr: 'Personnes' }, color: '#8b5cf6' },
   { id: 'actions', label: { en: 'Actions', fr: 'Actions' }, color: '#3b82f6' },
