@@ -18,6 +18,7 @@ export type CategoryId =
   | 'objects'
   | 'body'
   | 'time'
+  | 'phrases'
 
 export interface Category {
   id: CategoryId
@@ -32,6 +33,13 @@ export interface VocabularyItem {
   arasaacId: number
   /** If true, item is hidden unless the user explicitly enables it */
   hiddenByDefault?: boolean
+}
+
+export interface QuickPhrase {
+  id: string
+  label: BilingualLabel
+  /** Emoji icon displayed on the phrase button */
+  icon: string
 }
 
 export interface BoardState {

@@ -3,9 +3,11 @@ import type { VocabularyItem, CategoryId } from '../data/types'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useBoard } from '../hooks/useBoard'
 import { useSpeech } from '../hooks/useSpeech'
+import { quickPhrases } from '../data/quickPhrases'
 import { preloadAllAudio } from '../lib/audioCache'
 import { CategoryTabs } from './CategoryTabs'
 import { SymbolButton } from './SymbolButton'
+import { PhraseButton } from './PhraseButton'
 import { SentenceStrip } from './SentenceStrip'
 import { Header } from './Header'
 import { TileConfigurator } from './TileConfigurator'
@@ -13,7 +15,7 @@ import { TileConfigurator } from './TileConfigurator'
 export function Board() {
   const { language } = useLanguage()
   const { board, visibleItems, toggleItemVisibility, isItemVisible } = useBoard()
-  const { speak, speakSentence } = useSpeech()
+  const { speak, speakSentence, speakPhrase } = useSpeech()
 
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all')
   const [sentence, setSentence] = useState<VocabularyItem[]>([])
@@ -24,10 +26,12 @@ export function Board() {
     preloadAllAudio(board.items, ['en', 'fr'])
   }, [board.items])
 
-  // Only show categories that have at least one visible item (plus "all")
+  // Only show categories that have at least one visible item (plus "all" and "phrases")
   const visibleCategories = useMemo(() => {
     const visibleCategoryIds = new Set(visibleItems.map((item) => item.categoryId))
-    return board.categories.filter((c) => c.id === 'all' || visibleCategoryIds.has(c.id))
+    return board.categories.filter(
+      (c) => c.id === 'all' || c.id === 'phrases' || visibleCategoryIds.has(c.id),
+    )
   }, [board.categories, visibleItems])
 
   // If the active category no longer has visible items, fall back to "all"
@@ -45,6 +49,10 @@ export function Board() {
     speak(item, language)
     setSentence((prev) => [...prev, item])
   }, [speak, language])
+
+  const handlePhraseTap = useCallback((phrase: Parameters<typeof speakPhrase>[0]) => {
+    speakPhrase(phrase, language)
+  }, [speakPhrase, language])
 
   const handlePlaySentence = useCallback(() => {
     speakSentence(sentence, language)
@@ -80,25 +88,41 @@ export function Board() {
       />
 
       <main className="flex-1 overflow-y-auto px-4 pb-6 pt-3">
-        <div
-          data-testid="symbol-grid"
-          className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
-        >
-          {filteredItems.map((item) => {
-            const color = effectiveCategory === 'all'
-              ? (board.categories.find((c) => c.id === item.categoryId)?.color ?? categoryColor)
-              : categoryColor
-            return (
-              <SymbolButton
-                key={item.id}
-                item={item}
+        {effectiveCategory === 'phrases' ? (
+          <div
+            data-testid="phrase-grid"
+            className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3"
+          >
+            {quickPhrases.map((phrase) => (
+              <PhraseButton
+                key={phrase.id}
+                phrase={phrase}
                 language={language}
-                categoryColor={color}
-                onTap={handleSymbolTap}
+                onTap={handlePhraseTap}
               />
-            )
-          })}
-        </div>
+            ))}
+          </div>
+        ) : (
+          <div
+            data-testid="symbol-grid"
+            className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
+          >
+            {filteredItems.map((item) => {
+              const color = effectiveCategory === 'all'
+                ? (board.categories.find((c) => c.id === item.categoryId)?.color ?? categoryColor)
+                : categoryColor
+              return (
+                <SymbolButton
+                  key={item.id}
+                  item={item}
+                  language={language}
+                  categoryColor={color}
+                  onTap={handleSymbolTap}
+                />
+              )
+            })}
+          </div>
+        )}
       </main>
 
       {configuratorOpen && (
