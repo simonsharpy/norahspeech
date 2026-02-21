@@ -115,5 +115,14 @@ export function useSpeech() {
     }
   }, [stopCurrent])
 
-  return { speak, speakSentence }
+  /**
+   * Speak arbitrary text (not tied to a vocabulary item).
+   * Uses Web Speech API directly since there are no pre-generated audio files.
+   */
+  const speakText = useCallback((text: string, language: Language) => {
+    stopCurrent()
+    fallbackSpeak(text, language)
+  }, [stopCurrent])
+
+  return { speak, speakSentence, speakText }
 }

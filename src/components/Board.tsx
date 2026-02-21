@@ -9,6 +9,7 @@ import { SymbolButton } from './SymbolButton'
 import { SentenceStrip } from './SentenceStrip'
 import { Header } from './Header'
 import { TileConfigurator } from './TileConfigurator'
+import { ResponseOverlay } from './ResponseOverlay'
 
 export function Board() {
   const { language } = useLanguage()
@@ -100,6 +101,8 @@ export function Board() {
           })}
         </div>
       </main>
+
+      <ResponseOverlay />
 
       {configuratorOpen && (
         <TileConfigurator
