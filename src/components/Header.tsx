@@ -2,22 +2,52 @@ import { useLanguage } from '../contexts/LanguageContext'
 
 interface HeaderProps {
   onOpenConfigurator: () => void
+  holdToPreview: boolean
+  onToggleHoldToPreview: () => void
 }
 
-export function Header({ onOpenConfigurator }: HeaderProps) {
+export function Header({ onOpenConfigurator, holdToPreview, onToggleHoldToPreview }: HeaderProps) {
   const { language, toggleLanguage } = useLanguage()
 
   return (
     <header className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-200 sticky top-0 z-10">
-      <button
-        data-testid="language-toggle"
-        onClick={toggleLanguage}
-        className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-200 active:scale-95 transition-all cursor-pointer select-none border border-gray-200"
-        aria-label={language === 'fr' ? 'Switch to English' : 'Passer en français'}
-      >
-        <span className="text-lg leading-none">{language === 'fr' ? '🇫🇷' : '🇬🇧'}</span>
-        <span>{language === 'fr' ? 'FR' : 'EN'}</span>
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          data-testid="language-toggle"
+          onClick={toggleLanguage}
+          className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-200 active:scale-95 transition-all cursor-pointer select-none border border-gray-200"
+          aria-label={language === 'fr' ? 'Switch to English' : 'Passer en francais'}
+        >
+          <span className="text-lg leading-none">{language === 'fr' ? '\u{1F1EB}\u{1F1F7}' : '\u{1F1EC}\u{1F1E7}'}</span>
+          <span>{language === 'fr' ? 'FR' : 'EN'}</span>
+        </button>
+
+        <button
+          data-testid="hold-to-preview-toggle"
+          onClick={onToggleHoldToPreview}
+          className={`
+            flex items-center gap-1.5 rounded-full px-3 py-2 text-sm font-bold
+            transition-all cursor-pointer select-none border
+            active:scale-95
+            ${holdToPreview
+              ? 'bg-indigo-100 text-indigo-700 border-indigo-300 hover:bg-indigo-200'
+              : 'bg-gray-100 text-gray-500 border-gray-200 hover:bg-gray-200'
+            }
+          `}
+          aria-label={language === 'fr'
+            ? (holdToPreview ? 'Desactiver appui long' : 'Activer appui long')
+            : (holdToPreview ? 'Disable hold to preview' : 'Enable hold to preview')
+          }
+          title={language === 'fr'
+            ? (holdToPreview ? 'Appui long : actif' : 'Appui long : inactif')
+            : (holdToPreview ? 'Hold to preview: on' : 'Hold to preview: off')
+          }
+        >
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15.042 21.672L13.684 16.6m0 0l-2.51 2.225.569-9.47 5.227 7.917-3.286-.672zM12 2.25V4.5m5.834.166l-1.591 1.591M20.25 10.5H18M7.757 14.743l-1.59 1.59M6 10.5H3.75m4.007-4.243l-1.59-1.59" />
+          </svg>
+        </button>
+      </div>
 
       <div className="flex items-center gap-2.5">
         <img

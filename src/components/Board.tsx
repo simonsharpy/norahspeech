@@ -3,6 +3,7 @@ import type { VocabularyItem, CategoryId } from '../data/types'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useBoard } from '../hooks/useBoard'
 import { useSpeech } from '../hooks/useSpeech'
+import { useSettings } from '../hooks/useSettings'
 import { preloadAllAudio } from '../lib/audioCache'
 import { CategoryTabs } from './CategoryTabs'
 import { SymbolButton } from './SymbolButton'
@@ -14,6 +15,7 @@ export function Board() {
   const { language } = useLanguage()
   const { board, visibleItems, toggleItemVisibility, isItemVisible } = useBoard()
   const { speak, speakSentence } = useSpeech()
+  const { holdToPreview, toggleHoldToPreview } = useSettings()
 
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all')
   const [sentence, setSentence] = useState<VocabularyItem[]>([])
@@ -60,7 +62,11 @@ export function Board() {
 
   return (
     <div className="flex h-[100dvh] flex-col bg-gray-50">
-      <Header onOpenConfigurator={() => setConfiguratorOpen(true)} />
+      <Header
+        onOpenConfigurator={() => setConfiguratorOpen(true)}
+        holdToPreview={holdToPreview}
+        onToggleHoldToPreview={toggleHoldToPreview}
+      />
 
       <div className="pt-3 pb-1">
         <SentenceStrip
@@ -95,6 +101,7 @@ export function Board() {
                 language={language}
                 categoryColor={color}
                 onTap={handleSymbolTap}
+                holdToPreview={holdToPreview}
               />
             )
           })}
