@@ -32,6 +32,8 @@ export interface VocabularyItem {
   arasaacId: number
   /** If true, item is hidden unless the user explicitly enables it */
   hiddenByDefault?: boolean
+  /** If true, item is a core word displayed in the persistent core word bar */
+  isCore?: boolean
 }
 
 export interface BoardState {

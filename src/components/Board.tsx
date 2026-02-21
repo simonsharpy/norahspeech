@@ -5,6 +5,7 @@ import { useBoard } from '../hooks/useBoard'
 import { useSpeech } from '../hooks/useSpeech'
 import { preloadAllAudio } from '../lib/audioCache'
 import { CategoryTabs } from './CategoryTabs'
+import { CoreWordBar } from './CoreWordBar'
 import { SymbolButton } from './SymbolButton'
 import { SentenceStrip } from './SentenceStrip'
 import { Header } from './Header'
@@ -24,11 +25,21 @@ export function Board() {
     preloadAllAudio(board.items, ['en', 'fr'])
   }, [board.items])
 
-  // Only show categories that have at least one visible item (plus "all")
+  // Split visible items into core words (persistent bar) and non-core (category grid)
+  const coreWords = useMemo(
+    () => visibleItems.filter((item) => item.isCore),
+    [visibleItems],
+  )
+  const nonCoreItems = useMemo(
+    () => visibleItems.filter((item) => !item.isCore),
+    [visibleItems],
+  )
+
+  // Only show categories that have at least one visible non-core item (plus "all")
   const visibleCategories = useMemo(() => {
-    const visibleCategoryIds = new Set(visibleItems.map((item) => item.categoryId))
+    const visibleCategoryIds = new Set(nonCoreItems.map((item) => item.categoryId))
     return board.categories.filter((c) => c.id === 'all' || visibleCategoryIds.has(c.id))
-  }, [board.categories, visibleItems])
+  }, [board.categories, nonCoreItems])
 
   // If the active category no longer has visible items, fall back to "all"
   const effectiveCategory = (activeCategory !== 'all' && !visibleCategories.some((c) => c.id === activeCategory))
@@ -36,8 +47,8 @@ export function Board() {
     : activeCategory
 
   const filteredItems = effectiveCategory === 'all'
-    ? visibleItems
-    : visibleItems.filter((item) => item.categoryId === effectiveCategory)
+    ? nonCoreItems
+    : nonCoreItems.filter((item) => item.categoryId === effectiveCategory)
   const activeCategoryData = board.categories.find((c) => c.id === effectiveCategory)
   const categoryColor = activeCategoryData?.color ?? '#6366f1'
 
@@ -69,6 +80,14 @@ export function Board() {
           onPlay={handlePlaySentence}
           onClear={handleClearSentence}
           onRemoveLast={handleRemoveLast}
+        />
+      </div>
+
+      <div className="py-1">
+        <CoreWordBar
+          coreWords={coreWords}
+          language={language}
+          onTap={handleSymbolTap}
         />
       </div>
 

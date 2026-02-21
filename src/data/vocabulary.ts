@@ -17,13 +17,13 @@ export const defaultCategories: Category[] = [
 
 export const defaultVocabulary: VocabularyItem[] = [
   // ─── Social ────────────────────────────────────────────
-  { id: 'yes', label: { en: 'yes', fr: 'oui' }, categoryId: 'social', arasaacId: 5584 },
-  { id: 'no', label: { en: 'no', fr: 'non' }, categoryId: 'social', arasaacId: 5526 },
+  { id: 'yes', label: { en: 'yes', fr: 'oui' }, categoryId: 'social', arasaacId: 5584, isCore: true },
+  { id: 'no', label: { en: 'no', fr: 'non' }, categoryId: 'social', arasaacId: 5526, isCore: true },
   { id: 'hi', label: { en: 'hi', fr: 'salut' }, categoryId: 'social', arasaacId: 34567 },
   { id: 'bye', label: { en: 'bye', fr: 'au revoir' }, categoryId: 'social', arasaacId: 5896 },
   { id: 'please', label: { en: 'please', fr: 's\'il te plaît' }, categoryId: 'social', arasaacId: 8194 },
   { id: 'thank_you', label: { en: 'thank you', fr: 'merci' }, categoryId: 'social', arasaacId: 8128 },
-  { id: 'help', label: { en: 'help', fr: 'aide' }, categoryId: 'social', arasaacId: 4570 },
+  { id: 'help', label: { en: 'help', fr: 'aide' }, categoryId: 'social', arasaacId: 4570, isCore: true },
   // Extra social
   { id: 'sorry', label: { en: 'sorry', fr: 'pardon' }, categoryId: 'social', arasaacId: 11625, hiddenByDefault: true },
   { id: 'love', label: { en: 'love', fr: 'amour' }, categoryId: 'social', arasaacId: 11536, hiddenByDefault: true },
@@ -33,7 +33,7 @@ export const defaultVocabulary: VocabularyItem[] = [
   // ─── People ────────────────────────────────────────────
   { id: 'mom', label: { en: 'mom', fr: 'maman' }, categoryId: 'people', arasaacId: 2458 },
   { id: 'dad', label: { en: 'dad', fr: 'papa' }, categoryId: 'people', arasaacId: 2497 },
-  { id: 'me', label: { en: 'me', fr: 'moi' }, categoryId: 'people', arasaacId: 6632 },
+  { id: 'me', label: { en: 'I', fr: 'moi' }, categoryId: 'people', arasaacId: 6632, isCore: true },
   { id: 'you', label: { en: 'you', fr: 'toi' }, categoryId: 'people', arasaacId: 6625 },
   // Extra people
   { id: 'brother', label: { en: 'brother', fr: 'frère' }, categoryId: 'people', arasaacId: 2423, hiddenByDefault: true },
@@ -45,10 +45,10 @@ export const defaultVocabulary: VocabularyItem[] = [
   { id: 'grandpa', label: { en: 'grandpa', fr: 'papi' }, categoryId: 'people', arasaacId: 23718, hiddenByDefault: true },
 
   // ─── Actions ───────────────────────────────────────────
-  { id: 'want', label: { en: 'want', fr: 'vouloir' }, categoryId: 'actions', arasaacId: 5441 },
-  { id: 'go', label: { en: 'go', fr: 'aller' }, categoryId: 'actions', arasaacId: 2432 },
-  { id: 'stop', label: { en: 'stop', fr: 'arrêter' }, categoryId: 'actions', arasaacId: 7195 },
-  { id: 'more', label: { en: 'more', fr: 'encore' }, categoryId: 'actions', arasaacId: 26913 },
+  { id: 'want', label: { en: 'want', fr: 'vouloir' }, categoryId: 'actions', arasaacId: 5441, isCore: true },
+  { id: 'go', label: { en: 'go', fr: 'aller' }, categoryId: 'actions', arasaacId: 2432, isCore: true },
+  { id: 'stop', label: { en: 'stop', fr: 'arrêter' }, categoryId: 'actions', arasaacId: 7195, isCore: true },
+  { id: 'more', label: { en: 'more', fr: 'encore' }, categoryId: 'actions', arasaacId: 26913, isCore: true },
   { id: 'eat', label: { en: 'eat', fr: 'manger' }, categoryId: 'actions', arasaacId: 2349 },
   { id: 'drink', label: { en: 'drink', fr: 'boire' }, categoryId: 'actions', arasaacId: 2276 },
   { id: 'play', label: { en: 'play', fr: 'jouer' }, categoryId: 'actions', arasaacId: 2439 },
@@ -160,7 +160,7 @@ export const defaultVocabulary: VocabularyItem[] = [
 ]
 
 /** Bump this when default vocabulary changes to invalidate stale IndexedDB data */
-export const BOARD_VERSION = 9
+export const BOARD_VERSION = 10
 
 export const defaultBoard: BoardState = {
   version: BOARD_VERSION,
