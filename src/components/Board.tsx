@@ -3,10 +3,12 @@ import type { VocabularyItem, CategoryId } from '../data/types'
 import { useLanguage } from '../contexts/LanguageContext'
 import { useBoard } from '../hooks/useBoard'
 import { useSpeech } from '../hooks/useSpeech'
+import { useSuggestions } from '../hooks/useSuggestions'
 import { preloadAllAudio } from '../lib/audioCache'
 import { CategoryTabs } from './CategoryTabs'
 import { SymbolButton } from './SymbolButton'
 import { SentenceStrip } from './SentenceStrip'
+import { SuggestionRow } from './SuggestionRow'
 import { Header } from './Header'
 import { TileConfigurator } from './TileConfigurator'
 
@@ -18,6 +20,7 @@ export function Board() {
   const [activeCategory, setActiveCategory] = useState<CategoryId>('all')
   const [sentence, setSentence] = useState<VocabularyItem[]>([])
   const [configuratorOpen, setConfiguratorOpen] = useState(false)
+  const suggestions = useSuggestions(sentence, visibleItems)
 
   // Preload pre-generated audio files for all vocabulary items
   useEffect(() => {
@@ -71,6 +74,16 @@ export function Board() {
           onRemoveLast={handleRemoveLast}
         />
       </div>
+
+      {suggestions.length > 0 && (
+        <div className="pb-1">
+          <SuggestionRow
+            suggestions={suggestions}
+            language={language}
+            onTap={handleSymbolTap}
+          />
+        </div>
+      )}
 
       <CategoryTabs
         categories={visibleCategories}
