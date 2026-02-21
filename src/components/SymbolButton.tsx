@@ -7,9 +7,10 @@ interface SymbolButtonProps {
   language: Language
   categoryColor: string
   onTap: (item: VocabularyItem) => void
+  highlighted?: boolean
 }
 
-export function SymbolButton({ item, language, categoryColor, onTap }: SymbolButtonProps) {
+export function SymbolButton({ item, language, categoryColor, onTap, highlighted = false }: SymbolButtonProps) {
   const [isPressed, setIsPressed] = useState(false)
   const [useFallback, setUseFallback] = useState(false)
   const label = item.label[language]
@@ -33,13 +34,14 @@ export function SymbolButton({ item, language, categoryColor, onTap }: SymbolBut
         rounded-xl p-2 shadow-sm
         transition-all duration-150 ease-out
         active:scale-95 select-none cursor-pointer
-        min-h-[110px] w-full bg-white
+        min-h-[110px] w-full
         border-b-4 border-r-2 border-t border-l
         hover:brightness-95
         ${isPressed ? 'scale-95 brightness-90' : ''}
+        ${highlighted ? 'animate-pulse bg-amber-50 ring-4 ring-amber-400 scale-105' : 'bg-white'}
       `}
       style={{
-        borderColor: categoryColor,
+        borderColor: highlighted ? '#f59e0b' : categoryColor,
       }}
       aria-label={label}
     >
@@ -55,7 +57,7 @@ export function SymbolButton({ item, language, categoryColor, onTap }: SymbolBut
           }}
         />
       </div>
-      <span 
+      <span
         className="text-sm font-bold text-gray-900 leading-tight text-center sm:text-base w-full truncate px-1"
         style={{ color: 'black' }} // Force high contrast
       >

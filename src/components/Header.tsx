@@ -1,4 +1,5 @@
 import { useLanguage } from '../contexts/LanguageContext'
+import { useModelingMode } from '../contexts/ModelingModeContext'
 
 interface HeaderProps {
   onOpenConfigurator: () => void
@@ -6,18 +7,52 @@ interface HeaderProps {
 
 export function Header({ onOpenConfigurator }: HeaderProps) {
   const { language, toggleLanguage } = useLanguage()
+  const { modelingMode, toggleModelingMode } = useModelingMode()
 
   return (
     <header className="flex items-center justify-between px-4 py-2.5 bg-white border-b border-gray-200 sticky top-0 z-10">
-      <button
-        data-testid="language-toggle"
-        onClick={toggleLanguage}
-        className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-200 active:scale-95 transition-all cursor-pointer select-none border border-gray-200"
-        aria-label={language === 'fr' ? 'Switch to English' : 'Passer en français'}
-      >
-        <span className="text-lg leading-none">{language === 'fr' ? '🇫🇷' : '🇬🇧'}</span>
-        <span>{language === 'fr' ? 'FR' : 'EN'}</span>
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          data-testid="language-toggle"
+          onClick={toggleLanguage}
+          className="flex items-center gap-2 rounded-full bg-gray-100 px-4 py-2 text-sm font-bold text-gray-700 hover:bg-gray-200 active:scale-95 transition-all cursor-pointer select-none border border-gray-200"
+          aria-label={language === 'fr' ? 'Switch to English' : 'Passer en français'}
+        >
+          <span className="text-lg leading-none">{language === 'fr' ? '🇫🇷' : '🇬🇧'}</span>
+          <span>{language === 'fr' ? 'FR' : 'EN'}</span>
+        </button>
+
+        <button
+          data-testid="modeling-mode-toggle"
+          onClick={toggleModelingMode}
+          className={`
+            flex items-center justify-center w-10 h-10 rounded-full
+            active:scale-95 transition-all cursor-pointer select-none border
+            ${modelingMode
+              ? 'bg-amber-100 border-amber-400 text-amber-700'
+              : 'bg-gray-100 border-gray-200 text-gray-500 hover:bg-gray-200'
+            }
+          `}
+          aria-label={
+            modelingMode
+              ? (language === 'fr' ? 'Désactiver le mode modélisation' : 'Turn off modeling mode')
+              : (language === 'fr' ? 'Activer le mode modélisation' : 'Turn on modeling mode')
+          }
+          aria-pressed={modelingMode}
+        >
+          {/* Eye icon: open when modeling mode is on, crossed out when off */}
+          {modelingMode ? (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178Z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+          ) : (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.98 8.223A10.477 10.477 0 0 0 1.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.451 10.451 0 0 1 12 4.5c4.756 0 8.773 3.162 10.065 7.498a10.522 10.522 0 0 1-4.293 5.774M6.228 6.228 3 3m3.228 3.228 3.65 3.65m7.894 7.894L21 21m-3.228-3.228-3.65-3.65m0 0a3 3 0 1 0-4.243-4.243m4.242 4.242L9.88 9.88" />
+            </svg>
+          )}
+        </button>
+      </div>
 
       <div className="flex items-center gap-2.5">
         <img
