@@ -1,6 +1,7 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import type { VocabularyItem, CategoryId } from '../data/types'
 import { useLanguage } from '../contexts/LanguageContext'
+import { useGridSize } from '../contexts/GridSizeContext'
 import { useBoard } from '../hooks/useBoard'
 import { useSpeech } from '../hooks/useSpeech'
 import { preloadAllAudio } from '../lib/audioCache'
@@ -12,6 +13,7 @@ import { TileConfigurator } from './TileConfigurator'
 
 export function Board() {
   const { language } = useLanguage()
+  const { gridColumns } = useGridSize()
   const { board, visibleItems, toggleItemVisibility, isItemVisible } = useBoard()
   const { speak, speakSentence } = useSpeech()
 
@@ -82,7 +84,8 @@ export function Board() {
       <main className="flex-1 overflow-y-auto px-4 pb-6 pt-3">
         <div
           data-testid="symbol-grid"
-          className="grid grid-cols-3 gap-4 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6"
+          className="grid gap-4"
+          style={{ gridTemplateColumns: `repeat(${gridColumns}, minmax(0, 1fr))` }}
         >
           {filteredItems.map((item) => {
             const color = effectiveCategory === 'all'
@@ -94,6 +97,7 @@ export function Board() {
                 item={item}
                 language={language}
                 categoryColor={color}
+                gridColumns={gridColumns}
                 onTap={handleSymbolTap}
               />
             )

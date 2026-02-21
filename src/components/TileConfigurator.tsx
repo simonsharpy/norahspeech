@@ -1,6 +1,7 @@
 import type { BoardState, Category, Language, VocabularyItem } from '../data/types'
 import { getSymbolUrl, getArasaacUrl } from '../lib/arasaac'
 import { useState } from 'react'
+import { useGridSize, type GridColumns } from '../contexts/GridSizeContext'
 
 interface TileConfiguratorProps {
   board: BoardState
@@ -68,6 +69,61 @@ function ToggleItem({
         />
       </div>
     </button>
+  )
+}
+
+const gridOptions: { columns: GridColumns; label: { en: string; fr: string } }[] = [
+  { columns: 2, label: { en: '2 columns', fr: '2 colonnes' } },
+  { columns: 3, label: { en: '3 columns', fr: '3 colonnes' } },
+  { columns: 4, label: { en: '4 columns', fr: '4 colonnes' } },
+  { columns: 5, label: { en: '5 columns', fr: '5 colonnes' } },
+]
+
+function GridSizePicker({ language }: { language: Language }) {
+  const { gridColumns, setGridColumns } = useGridSize()
+
+  return (
+    <section className="mb-6">
+      <h3 className="text-base font-bold text-gray-700 mb-2 px-1">
+        {language === 'fr' ? 'Taille de la grille' : 'Grid size'}
+      </h3>
+      <div className="flex gap-2">
+        {gridOptions.map((option) => {
+          const isActive = gridColumns === option.columns
+          return (
+            <button
+              key={option.columns}
+              data-testid={`grid-size-${option.columns}`}
+              onClick={() => setGridColumns(option.columns)}
+              className={`
+                flex-1 flex flex-col items-center gap-1.5 rounded-xl px-3 py-3
+                border-2 transition-all duration-150 cursor-pointer select-none
+                ${isActive
+                  ? 'bg-indigo-50 border-indigo-400 shadow-sm'
+                  : 'bg-white border-gray-200 hover:border-gray-300'
+                }
+              `}
+            >
+              {/* Visual grid preview */}
+              <div
+                className="grid gap-0.5"
+                style={{ gridTemplateColumns: `repeat(${option.columns}, 1fr)` }}
+              >
+                {Array.from({ length: option.columns * option.columns }).map((_, i) => (
+                  <div
+                    key={i}
+                    className={`w-2.5 h-2.5 rounded-sm ${isActive ? 'bg-indigo-400' : 'bg-gray-300'}`}
+                  />
+                ))}
+              </div>
+              <span className={`text-xs font-semibold ${isActive ? 'text-indigo-700' : 'text-gray-500'}`}>
+                {option.label[language]}
+              </span>
+            </button>
+          )
+        })}
+      </div>
+    </section>
   )
 }
 
@@ -155,6 +211,8 @@ export function TileConfigurator({
 
       {/* Scrollable content */}
       <div className="flex-1 overflow-y-auto px-4 py-4">
+        <GridSizePicker language={language} />
+
         {realCategories.map((category) => {
           const items = board.items.filter((item) => item.categoryId === category.id)
           return (
